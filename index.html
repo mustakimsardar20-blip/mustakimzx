@@ -7,177 +7,236 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;
- font-family:Arial,sans-serif;
- background:#f4f5f7;
- color:#222;
-}
-header{
- background:#991b1b;
- color:white;
- padding:22px 15px;
- text-align:center;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f4f6;color:#222}
+header{background:#a60018;color:white;padding:19px 15px;text-align:center}
 header h2{margin:0;font-size:23px}
-header p{margin:7px 0 0}
-.container{
- max-width:600px;
- margin:20px auto;
- padding:15px;
-}
-.card{
- background:white;
- padding:20px;
- border-radius:14px;
- box-shadow:0 2px 12px #0001;
- margin-bottom:18px;
-}
-h3{color:#991b1b;margin-top:0}
-input{
- width:100%;
- padding:14px;
- border:1px solid #ddd;
- border-radius:8px;
- margin:8px 0 14px;
- font-size:16px;
-}
-button{
- width:100%;
- padding:14px;
- border:0;
- border-radius:8px;
- background:#991b1b;
- color:white;
- font-size:16px;
- margin:5px 0;
-}
-button:active{opacity:.8}
-.result{
- display:none;
- background:#fff;
- padding:18px;
- border:1px dashed #991b1b;
- border-radius:10px;
-}
-#qrcode{display:flex;justify-content:center;margin:15px}
-#barcode{width:100%;height:75px}
-footer{text-align:center;padding:20px;color:#777}
-@media print{
- body *{visibility:hidden}
- #sticker,#sticker *{visibility:visible}
- #sticker{position:absolute;top:0;left:0;width:100%}
-}
+header p{margin:6px 0 0;font-size:12px}
+.mail{position:absolute;right:18px;top:22px;color:white;font-size:23px;text-decoration:none}
+.container{max-width:650px;margin:22px auto;padding:15px}
+.tabs{display:flex;gap:10px;margin-bottom:18px}
+.tabs button{flex:1;padding:15px 5px;border:0;border-radius:8px;background:#ddd;font-weight:bold;font-size:15px}
+.tabs button.active{background:#a60018;color:white}
+.card{background:white;padding:20px;border-radius:12px;box-shadow:0 3px 12px #0001}
+h3{margin-top:0;color:#a60018}
+label{display:block;font-weight:bold;margin:14px 0 7px}
+input{width:100%;padding:13px;border:1px solid #ccc;border-radius:7px;font-size:16px}
+.mainbtn{width:100%;padding:14px;margin-top:17px;border:0;border-radius:7px;background:#a60018;color:white;font-size:16px;font-weight:bold}
+.secondary{background:#252525}
+.result{margin-top:20px;text-align:center;overflow:auto}
+.qrbox{display:inline-block;padding:12px;background:white;border:1px solid #ddd;margin:8px}
+.qrbox p{font-weight:bold;font-size:13px}
+#barcode{max-width:100%;height:auto}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.actions button{flex:1;min-width:110px}
+.note{font-size:12px;color:#666;margin-top:12px}
+footer{text-align:center;color:#777;font-size:12px;padding:22px}
+.hidden{display:none}
 </style>
 </head>
 
 <body>
 
 <header>
+<a class="mail" href="mailto:mustakimzx@gmail.com" onclick="this.href='mailto:mustakimsardar00142@gmail.com'">✉</a>
 <h2>MUSTAKIMZX VRL</h2>
-<p>LR STICKER & BARCODE SYSTEM</p>
+<p>Professional QR & Barcode Generator</p>
 </header>
 
 <div class="container">
 
-<div class="card">
-<h3>LR NUMBER SEARCH</h3>
-
-<input id="lr" placeholder="Enter LR Number">
-
-<button onclick="searchLR()">SEARCH LR</button>
-
-<p id="message"></p>
+<div class="tabs">
+<button id="qrTab" class="active" onclick="showMode('qr')">QR CODE</button>
+<button id="barTab" onclick="showMode('bar')">CODE 39 BARCODE</button>
 </div>
 
-<div class="card">
-<h3>CREATE LR STICKER</h3>
+<div id="qrSection" class="card">
+<h3>QR CODE GENERATOR</h3>
 
-<label>LR Number</label>
-<input id="stlr" placeholder="Enter LR Number">
+<label>Starting Number / Value</label>
+<input id="qrStart" type="text" placeholder="Example: 1090452546">
 
-<label>Consignor</label>
-<input id="sender" placeholder="Consignor Name">
+<label>Quantity</label>
+<input id="qrQty" type="number" min="1" max="100" value="1">
 
-<label>Consignee</label>
-<input id="receiver" placeholder="Consignee Name">
+<button class="mainbtn" onclick="makeQR()">GENERATE QR CODE</button>
 
-<label>Destination</label>
-<input id="destination" placeholder="Destination">
+<div id="qrResult" class="result"></div>
 
-<label>Packages</label>
-<input id="packages" type="number" placeholder="Number of Packages">
-
-<button onclick="generate()">GENERATE STICKER</button>
+<div class="actions">
+<button class="mainbtn secondary" onclick="downloadPDF()">DOWNLOAD A4 PDF</button>
+<button class="mainbtn secondary" onclick="printQR()">PRINT</button>
+</div>
+<p class="note">QR codes are generated in sequence when the starting value is numeric.</p>
 </div>
 
-<div class="card result" id="sticker">
-<h3>MUSTAKIMZX VRL</h3>
-<hr>
-<p>LR NUMBER: <b id="outlr"></b></p>
-<p>CONSIGNOR: <span id="outsender"></span></p>
-<p>CONSIGNEE: <span id="outreceiver"></span></p>
-<p>DESTINATION: <span id="outdestination"></span></p>
-<p>PACKAGES: <span id="outpackages"></span></p>
+<div id="barSection" class="card hidden">
+<h3>CODE 39 BARCODE GENERATOR</h3>
 
-<div id="qrcode"></div>
+<label>Enter Your Number / Value</label>
+<input id="barInput" type="text" placeholder="Example: 1090452546">
+
+<button class="mainbtn" onclick="makeBarcode()">GENERATE BARCODE</button>
+
+<div id="barResult" class="result">
 <svg id="barcode"></svg>
+</div>
 
-<button onclick="window.print()">PRINT STICKER</button>
+<div class="actions">
+<button class="mainbtn secondary" onclick="downloadBarcode()">DOWNLOAD PNG</button>
+<button class="mainbtn secondary" onclick="printBarcode()">PRINT</button>
+</div>
+<p class="note">Code 39 mode generates only ONE barcode at a time.</p>
 </div>
 
 </div>
 
-<footer>
-MUSTAKIMZX VRL © 2026
-</footer>
+<footer>© 2026 MUSTAKIMZX VRL</footer>
 
 <script>
+let qrValues=[];
 
-function searchLR(){
- let lr=document.getElementById("lr").value.trim();
- if(!lr){
-  alert("Enter LR Number");
-  return;
- }
- document.getElementById("message").innerText=
- "Company LR API connection is not configured. No official LR data available.";
+function showMode(mode){
+document.getElementById('qrSection').classList.toggle('hidden',mode!=='qr');
+document.getElementById('barSection').classList.toggle('hidden',mode!=='bar');
+document.getElementById('qrTab').classList.toggle('active',mode==='qr');
+document.getElementById('barTab').classList.toggle('active',mode==='bar');
 }
 
-function generate(){
+function makeQR(){
+let start=document.getElementById('qrStart').value.trim();
+let qty=parseInt(document.getElementById('qrQty').value);
+let box=document.getElementById('qrResult');
+box.innerHTML='';
+qrValues=[];
 
- let lr=document.getElementById("stlr").value.trim();
+if(!start){alert('Please enter starting value');return}
+if(!qty||qty<1||qty>100){alert('Quantity must be between 1 and 100');return}
 
- if(!lr){
-  alert("Enter LR Number");
-  return;
- }
-
- document.getElementById("outlr").innerText=lr;
- document.getElementById("outsender").innerText=document.getElementById("sender").value;
- document.getElementById("outreceiver").innerText=document.getElementById("receiver").value;
- document.getElementById("outdestination").innerText=document.getElementById("destination").value;
- document.getElementById("outpackages").innerText=document.getElementById("packages").value;
-
- document.getElementById("qrcode").innerHTML="";
-
- new QRCode(document.getElementById("qrcode"),{
-  text:lr,
-  width:120,
-  height:120
- });
-
- JsBarcode("#barcode",lr,{
-  format:"CODE39",
-  displayValue:true
- });
-
- document.getElementById("sticker").style.display="block";
+if(!/^\d+$/.test(start)&&qty>1){
+alert('Multiple QR codes require a numeric starting value.');
+return;
 }
 
+for(let i=0;i<qty;i++){
+let value=/^\d+$/.test(start)?String(Number(start)+i):start;
+qrValues.push(value);
+
+let item=document.createElement('div');
+item.className='qrbox';
+let qr=document.createElement('div');
+let title=document.createElement('p');
+title.textContent=value;
+item.appendChild(qr);
+item.appendChild(title);
+box.appendChild(item);
+
+new QRCode(qr,{
+text:value,
+width:160,
+height:160,
+correctLevel:QRCode.CorrectLevel.H
+});
+}
+}
+
+function getQRImages(){
+let images=[];
+document.querySelectorAll('#qrResult .qrbox').forEach(box=>{
+let canvas=box.querySelector('canvas');
+let img=box.querySelector('img');
+if(canvas) images.push(canvas.toDataURL('image/png'));
+else if(img) images.push(img.src);
+});
+return images;
+}
+
+async function downloadPDF(){
+if(!qrValues.length){alert('Generate QR codes first');return}
+const {jsPDF}=window.jspdf;
+let pdf=new jsPDF('p','mm','a4');
+let images=getQRImages();
+let x=15,y=18;
+images.forEach((src,i)=>{
+if(i>0 && i%3===0){x=15;y+=85}
+if(y>250){pdf.addPage();x=15;y=18}
+pdf.setFontSize(11);
+pdf.text(qrValues[i],x,y);
+pdf.addImage(src,'PNG',x,y+4,55,55);
+x+=62;
+if(x>145){x=15;y+=85}
+});
+pdf.save('MUSTAKIMZX-QR-CODES.pdf');
+}
+
+function printQR(){
+if(!qrValues.length){alert('Generate QR codes first');return}
+let images=getQRImages();
+let w=window.open('','_blank');
+w.document.write('<html><head><title>QR Print</title><style>body{font-family:Arial;display:flex;flex-wrap:wrap}.item{width:30%;text-align:center;margin:10px}.item img{width:150px}</style></head><body>');
+images.forEach((src,i)=>{
+w.document.write('<div class="item"><img src="'+src+'"><p>'+qrValues[i]+'</p></div>');
+});
+w.document.write('</body></html>');
+w.document.close();
+w.onload=()=>w.print();
+}
+
+function makeBarcode(){
+let value=document.getElementById('barInput').value.trim();
+if(!value){alert('Please enter a value');return}
+try{
+JsBarcode('#barcode',value,{
+format:'CODE39',
+lineColor:'#000',
+width:2,
+height:100,
+displayValue:true,
+fontSize:18,
+margin:10
+});
+}catch(e){alert('Invalid Code 39 value. Use A-Z, 0-9, space and supported symbols.')}
+}
+
+function barcodePNG(){
+let svg=document.getElementById('barcode');
+if(!svg.innerHTML){alert('Generate barcode first');return null}
+let xml=new XMLSerializer().serializeToString(svg);
+let blob=new Blob([xml],{type:'image/svg+xml;charset=utf-8'});
+return URL.createObjectURL(blob);
+}
+
+function downloadBarcode(){
+let url=barcodePNG();
+if(!url)return;
+let img=new Image();
+img.onload=function(){
+let canvas=document.createElement('canvas');
+canvas.width=img.width*2;
+canvas.height=img.height*2;
+let ctx=canvas.getContext('2d');
+ctx.fillStyle='white';
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.drawImage(img,0,0,canvas.width,canvas.height);
+let a=document.createElement('a');
+a.href=canvas.toDataURL('image/png');
+a.download='MUSTAKIMZX-CODE39.png';
+a.click();
+URL.revokeObjectURL(url);
+};
+img.src=url;
+}
+
+function printBarcode(){
+let url=barcodePNG();
+if(!url)return;
+let w=window.open('','_blank');
+w.document.write('<html><body style="text-align:center;padding:40px"><img src="'+url+'" onload="window.print()" style="max-width:100%"></body></html>');
+w.document.close();
+}
 </script>
 
 </body>
