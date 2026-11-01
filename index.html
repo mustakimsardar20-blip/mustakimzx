@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MUSTAKIMZX VRL</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f4f5f7;
+ color:#222;
+}
+header{
+ background:#991b1b;
+ color:white;
+ padding:22px 15px;
+ text-align:center;
+}
+header h2{margin:0;font-size:23px}
+header p{margin:7px 0 0}
+.container{
+ max-width:600px;
+ margin:20px auto;
+ padding:15px;
+}
+.card{
+ background:white;
+ padding:20px;
+ border-radius:14px;
+ box-shadow:0 2px 12px #0001;
+ margin-bottom:18px;
+}
+h3{color:#991b1b;margin-top:0}
+input{
+ width:100%;
+ padding:14px;
+ border:1px solid #ddd;
+ border-radius:8px;
+ margin:8px 0 14px;
+ font-size:16px;
+}
+button{
+ width:100%;
+ padding:14px;
+ border:0;
+ border-radius:8px;
+ background:#991b1b;
+ color:white;
+ font-size:16px;
+ margin:5px 0;
+}
+button:active{opacity:.8}
+.result{
+ display:none;
+ background:#fff;
+ padding:18px;
+ border:1px dashed #991b1b;
+ border-radius:10px;
+}
+#qrcode{display:flex;justify-content:center;margin:15px}
+#barcode{width:100%;height:75px}
+footer{text-align:center;padding:20px;color:#777}
+@media print{
+ body *{visibility:hidden}
+ #sticker,#sticker *{visibility:visible}
+ #sticker{position:absolute;top:0;left:0;width:100%}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>MUSTAKIMZX VRL</h2>
+<p>LR STICKER & BARCODE SYSTEM</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h3>LR NUMBER SEARCH</h3>
+
+<input id="lr" placeholder="Enter LR Number">
+
+<button onclick="searchLR()">SEARCH LR</button>
+
+<p id="message"></p>
+</div>
+
+<div class="card">
+<h3>CREATE LR STICKER</h3>
+
+<label>LR Number</label>
+<input id="stlr" placeholder="Enter LR Number">
+
+<label>Consignor</label>
+<input id="sender" placeholder="Consignor Name">
+
+<label>Consignee</label>
+<input id="receiver" placeholder="Consignee Name">
+
+<label>Destination</label>
+<input id="destination" placeholder="Destination">
+
+<label>Packages</label>
+<input id="packages" type="number" placeholder="Number of Packages">
+
+<button onclick="generate()">GENERATE STICKER</button>
+</div>
+
+<div class="card result" id="sticker">
+<h3>MUSTAKIMZX VRL</h3>
+<hr>
+<p>LR NUMBER: <b id="outlr"></b></p>
+<p>CONSIGNOR: <span id="outsender"></span></p>
+<p>CONSIGNEE: <span id="outreceiver"></span></p>
+<p>DESTINATION: <span id="outdestination"></span></p>
+<p>PACKAGES: <span id="outpackages"></span></p>
+
+<div id="qrcode"></div>
+<svg id="barcode"></svg>
+
+<button onclick="window.print()">PRINT STICKER</button>
+</div>
+
+</div>
+
+<footer>
+MUSTAKIMZX VRL © 2026
+</footer>
+
+<script>
+
+function searchLR(){
+ let lr=document.getElementById("lr").value.trim();
+ if(!lr){
+  alert("Enter LR Number");
+  return;
+ }
+ document.getElementById("message").innerText=
+ "Company LR API connection is not configured. No official LR data available.";
+}
+
+function generate(){
+
+ let lr=document.getElementById("stlr").value.trim();
+
+ if(!lr){
+  alert("Enter LR Number");
+  return;
+ }
+
+ document.getElementById("outlr").innerText=lr;
+ document.getElementById("outsender").innerText=document.getElementById("sender").value;
+ document.getElementById("outreceiver").innerText=document.getElementById("receiver").value;
+ document.getElementById("outdestination").innerText=document.getElementById("destination").value;
+ document.getElementById("outpackages").innerText=document.getElementById("packages").value;
+
+ document.getElementById("qrcode").innerHTML="";
+
+ new QRCode(document.getElementById("qrcode"),{
+  text:lr,
+  width:120,
+  height:120
+ });
+
+ JsBarcode("#barcode",lr,{
+  format:"CODE39",
+  displayValue:true
+ });
+
+ document.getElementById("sticker").style.display="block";
+}
+
+</script>
+
+</body>
+</html>
