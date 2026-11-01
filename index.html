@@ -15,7 +15,7 @@
 body{
  margin:0;
  font-family:Arial,sans-serif;
- background:#f2f3f5;
+ background:#f1f3f6;
  color:#222;
 }
 
@@ -26,44 +26,56 @@ header{
  padding:22px 15px;
 }
 
-header h2{margin:0;font-size:25px}
-header p{margin:8px 0;font-size:13px}
+header h2{
+ margin:0;
+ font-size:25px;
+}
 
-.mail{
- display:inline-flex;
+header p{
+ margin:8px 0;
+ font-size:14px;
+}
+
+.contact{
+ display:flex;
  align-items:center;
  justify-content:center;
- width:58px;
- height:58px;
- margin-top:10px;
- border:2px solid white;
+ width:70px;
+ height:70px;
+ margin:12px auto 0;
  border-radius:50%;
+ background:#20bd68;
  color:white;
- font-size:34px;
+ border:3px solid white;
+ font-size:38px;
  text-decoration:none;
+ box-shadow:0 3px 10px #0003;
+}
+
+.contact small{
+ display:none;
 }
 
 .container{
  max-width:650px;
- margin:22px auto;
- padding:15px;
+ margin:20px auto;
+ padding:14px;
 }
 
 .tabs{
  display:flex;
  gap:10px;
- margin-bottom:18px;
+ margin-bottom:16px;
 }
 
 .tabs button{
  flex:1;
- padding:15px 5px;
+ padding:16px 5px;
  border:0;
- border-radius:8px;
+ border-radius:9px;
  background:#ddd;
  font-weight:bold;
  font-size:14px;
- cursor:pointer;
 }
 
 .tabs button.active{
@@ -74,41 +86,61 @@ header p{margin:8px 0;font-size:13px}
 .card{
  background:white;
  padding:20px;
- border-radius:12px;
+ border-radius:13px;
  box-shadow:0 3px 12px #0001;
 }
 
-h3{margin-top:0;color:#a60018}
+h3{
+ margin-top:0;
+ color:#a60018;
+ font-size:21px;
+}
 
 label{
  display:block;
  font-weight:bold;
- margin:14px 0 7px;
+ margin:16px 0 8px;
+ font-size:16px;
 }
 
 input{
  width:100%;
- padding:13px;
+ padding:15px;
  border:1px solid #ccc;
- border-radius:7px;
- font-size:16px;
+ border-radius:9px;
+ font-size:17px;
 }
 
-button{cursor:pointer}
+button{
+ cursor:pointer;
+}
 
 .mainbtn{
  width:100%;
- padding:14px;
- margin-top:17px;
+ padding:16px;
+ margin-top:18px;
  border:0;
- border-radius:7px;
+ border-radius:9px;
  background:#a60018;
  color:white;
- font-size:15px;
+ font-size:16px;
  font-weight:bold;
 }
 
-.secondary{background:#252525}
+.secondary{
+ background:#252525;
+}
+
+.actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+}
+
+.actions button{
+ flex:1;
+ min-width:120px;
+}
 
 .result{
  margin-top:20px;
@@ -117,48 +149,54 @@ button{cursor:pointer}
 
 .qrbox{
  display:inline-block;
+ width:190px;
+ max-width:100%;
  padding:12px;
+ margin:8px;
  background:white;
  border:1px solid #ddd;
- margin:8px;
- width:190px;
+ border-radius:5px;
 }
 
 .qrbox p{
+ font-size:15px;
  font-weight:bold;
- font-size:14px;
  word-break:break-all;
 }
 
-.actions{
- display:flex;
- gap:8px;
- flex-wrap:wrap;
-}
-
-.actions button{
- flex:1;
- min-width:110px;
+.qrbox img,
+.qrbox canvas{
+ max-width:100%;
+ height:auto;
 }
 
 .note{
- font-size:12px;
  color:#666;
- margin-top:12px;
+ font-size:13px;
+ line-height:1.6;
+ margin-top:15px;
 }
 
-.hidden{display:none!important}
+.status{
+ color:#16784b;
+ font-weight:bold;
+ margin-top:18px;
+}
 
-footer{
- text-align:center;
- color:#777;
- font-size:12px;
- padding:22px;
+.hidden{
+ display:none!important;
 }
 
 #barcode{
  max-width:100%;
  height:auto;
+}
+
+footer{
+ text-align:center;
+ padding:22px;
+ color:#777;
+ font-size:12px;
 }
 
 @media(max-width:400px){
@@ -167,8 +205,10 @@ footer{
 }
 
 @media print{
+ header,.tabs,.no-print,footer{
+  display:none!important;
+ }
  body{background:white}
- header,.tabs,.no-print,footer{display:none!important}
  .container{margin:0;padding:0}
  .card{box-shadow:none}
 }
@@ -180,84 +220,125 @@ footer{
 <header>
  <h2>MUSTAKIMZX VRL</h2>
  <p>Professional QR & Barcode Generator</p>
- <a class="mail" href="mailto:mustakimsardar00142@gmail.com">✉</a>
+
+ <a class="contact"
+ href="mailto:mustakimsardar00142@gmail.com"
+ title="Contact by Email">
+ ✉
+ </a>
 </header>
 
 <div class="container">
 
  <div class="tabs no-print">
-  <button id="qrTab" class="active" onclick="showMode('qr')">
-   QR CODE
+
+  <button id="qrTab"
+  class="active"
+  onclick="showMode('qr')">
+  QR CODE
   </button>
 
-  <button id="barTab" onclick="showMode('bar')">
-   CODE 39 BARCODE
+  <button id="barTab"
+  onclick="showMode('bar')">
+  CODE 39 BARCODE
   </button>
+
  </div>
+
+ <!-- QR SECTION -->
 
  <div id="qrSection" class="card">
 
   <h3>QR CODE GENERATOR</h3>
 
   <label>Starting Number</label>
-  <input id="qrStart" type="text"
+
+  <input
+  id="qrStart"
+  type="text"
   inputmode="numeric"
   placeholder="Example: 1090452546">
 
   <label>Quantity</label>
-  <input id="qrQty" type="number"
-  min="1" max="100" value="1">
 
-  <button class="mainbtn no-print" onclick="makeQR()">
-   GENERATE QR CODE
+  <input
+  id="qrQty"
+  type="number"
+  min="1"
+  max="100"
+  value="10">
+
+  <button class="mainbtn no-print"
+  onclick="makeQR()">
+  GENERATE QR CODES
   </button>
+
+  <p class="note">
+  Example: Starting number 1090452546 aur quantity 3 dene par QR content hoga:
+  1090452546*1, 1090452546*2, 1090452546*3.
+  </p>
+
+  <div id="qrStatus" class="status"></div>
 
   <div id="qrResult" class="result"></div>
 
   <div class="actions no-print">
-   <button class="mainbtn secondary" onclick="downloadPDF()">
-    DOWNLOAD A4 PDF
+
+   <button class="mainbtn secondary"
+   onclick="downloadPDF()">
+   DOWNLOAD A4 PDF / PRINT
    </button>
 
-   <button class="mainbtn secondary" onclick="printQR()">
-    PRINT
+   <button class="mainbtn secondary"
+   onclick="clearQR()">
+   CLEAR
    </button>
+
   </div>
 
-  <p class="note">
-   Each QR Code contains its own consecutive number.
-  </p>
-
  </div>
+
+ <!-- BARCODE SECTION -->
 
  <div id="barSection" class="card hidden">
 
   <h3>CODE 39 BARCODE GENERATOR</h3>
 
   <label>Enter Number / Value</label>
-  <input id="barInput" type="text"
+
+  <input
+  id="barInput"
+  type="text"
   placeholder="Example: 1090452546">
 
-  <button class="mainbtn no-print" onclick="makeBarcode()">
-   GENERATE BARCODE
+  <button class="mainbtn no-print"
+  onclick="makeBarcode()">
+  GENERATE BARCODE
   </button>
+
+  <div id="barStatus" class="status"></div>
 
   <div id="barResult" class="result">
    <svg id="barcode"></svg>
   </div>
 
   <div class="actions no-print">
-   <button class="mainbtn secondary" onclick="downloadBarcode()">
-    DOWNLOAD PNG
+
+   <button class="mainbtn secondary"
+   onclick="downloadBarcode()">
+   DOWNLOAD PNG
    </button>
 
-   <button class="mainbtn secondary" onclick="printBarcode()">
-    PRINT
+   <button class="mainbtn secondary"
+   onclick="printBarcode()">
+   PRINT
    </button>
+
   </div>
 
   <p class="note">
-   Only ONE Code 39 barcode will be generated at a time.
+  Only ONE Code 39 barcode will be generated at a time.
+  Allowed: A-Z, 0-9, space, - . $ / + %
   </p>
 
  </div>
@@ -291,43 +372,45 @@ function showMode(mode){
 
 function makeQR(){
 
+ const start=document.getElementById('qrStart').value.trim();
+ const qty=parseInt(document.getElementById('qrQty').value);
+
+ const box=document.getElementById('qrResult');
+ const status=document.getElementById('qrStatus');
+
+ box.innerHTML='';
+ status.textContent='';
+ qrValues=[];
+
  if(typeof QRCode==='undefined'){
   alert('QR library load nahi hui. Internet check karein.');
   return;
  }
 
- let start=document.getElementById('qrStart').value.trim();
- let qty=parseInt(document.getElementById('qrQty').value);
-
- let box=document.getElementById('qrResult');
-
- box.innerHTML='';
- qrValues=[];
-
  if(!/^\d+$/.test(start)){
-  alert('Please enter a valid starting number');
+  alert('Please enter a valid starting number.');
   return;
  }
 
  if(!qty || qty<1 || qty>100){
-  alert('Quantity must be between 1 and 100');
+  alert('Quantity 1 se 100 ke beech honi chahiye.');
   return;
  }
 
- let first=BigInt(start);
+ const first=BigInt(start);
 
- for(let i=0;i<qty;i++){
+ for(let i=1;i<=qty;i++){
 
-  let value=(first+BigInt(i)).toString();
+  const value=first.toString()+'*'+i;
 
   qrValues.push(value);
 
-  let item=document.createElement('div');
+  const item=document.createElement('div');
   item.className='qrbox';
 
-  let qr=document.createElement('div');
+  const qr=document.createElement('div');
 
-  let title=document.createElement('p');
+  const title=document.createElement('p');
   title.textContent=value;
 
   item.appendChild(qr);
@@ -344,15 +427,29 @@ function makeQR(){
 
  }
 
+ status.textContent=qty+' QR codes ready hain.';
+
+}
+
+function clearQR(){
+
+ qrValues=[];
+
+ document.getElementById('qrResult').innerHTML='';
+ document.getElementById('qrStatus').textContent='';
+ document.getElementById('qrStart').value='';
+ document.getElementById('qrQty').value='10';
+
 }
 
 function getQRImages(){
 
- let images=[];
+ const images=[];
 
- document.querySelectorAll('#qrResult .qrbox').forEach(box=>{
+ document.querySelectorAll('#qrResult .qrbox')
+ .forEach(box=>{
 
-  let canvas=box.querySelector('canvas');
+  const canvas=box.querySelector('canvas');
 
   if(canvas){
    images.push(canvas.toDataURL('image/png'));
@@ -367,7 +464,7 @@ function getQRImages(){
 function downloadPDF(){
 
  if(!qrValues.length){
-  alert('Generate QR codes first');
+  alert('Please generate QR codes first.');
   return;
  }
 
@@ -376,7 +473,7 @@ function downloadPDF(){
   return;
  }
 
- let images=getQRImages();
+ const images=getQRImages();
 
  if(images.length!==qrValues.length){
   alert('QR images ready nahi hain. Dobara Generate karein.');
@@ -385,7 +482,7 @@ function downloadPDF(){
 
  const {jsPDF}=window.jspdf;
 
- let pdf=new jsPDF('p','mm','a4');
+ const pdf=new jsPDF('p','mm','a4');
 
  images.forEach((src,i)=>{
 
@@ -393,12 +490,12 @@ function downloadPDF(){
    pdf.addPage();
   }
 
-  let position=i%8;
-  let col=position%2;
-  let row=Math.floor(position/2);
+  const position=i%8;
+  const col=position%2;
+  const row=Math.floor(position/2);
 
-  let x=25+(col*95);
-  let y=10+(row*70);
+  const x=25+(col*95);
+  const y=10+(row*70);
 
   pdf.setFontSize(11);
   pdf.text(qrValues[i],x,y);
@@ -411,41 +508,25 @@ function downloadPDF(){
 
 }
 
-function printQR(){
-
- if(!qrValues.length){
-  alert('Generate QR codes first');
-  return;
- }
-
- let images=getQRImages();
-
- let content=images.map((src,i)=>`
-  <div style="display:inline-block;width:45%;text-align:center;margin:10px">
-   <p>${qrValues[i]}</p>
-   <img src="${src}" width="150">
-  </div>
- `).join('');
-
- printPage(content);
-}
-
 function makeBarcode(){
+
+ const value=document.getElementById('barInput')
+ .value.trim().toUpperCase();
+
+ const status=document.getElementById('barStatus');
+
+ status.textContent='';
+ barcodeReady=false;
 
  if(typeof JsBarcode==='undefined'){
   alert('Barcode library load nahi hui. Internet check karein.');
   return;
  }
 
- let value=document.getElementById('barInput').value.trim();
-
  if(!value){
-  alert('Please enter a value');
+  alert('Please enter a value.');
   return;
  }
-
- document.getElementById('barcode').innerHTML='';
- barcodeReady=false;
 
  try{
 
@@ -458,10 +539,11 @@ function makeBarcode(){
   });
 
   barcodeReady=true;
+  status.textContent='1 Barcode ready hai.';
 
  }catch(error){
 
-  alert('Invalid Code 39 value. Use A-Z, 0-9, space, - . $ / + %');
+  alert('Invalid Code 39 value. Allowed: A-Z, 0-9, space, - . $ / + %');
 
  }
 
@@ -470,39 +552,41 @@ function makeBarcode(){
 function downloadBarcode(){
 
  if(!barcodeReady){
-  alert('Generate barcode first');
+  alert('Generate barcode first.');
   return;
  }
 
- let svg=document.getElementById('barcode');
+ const svg=document.getElementById('barcode');
 
- let xml=new XMLSerializer().serializeToString(svg);
+ const xml=new XMLSerializer()
+ .serializeToString(svg);
 
- let blob=new Blob([xml],{
+ const blob=new Blob([xml],{
   type:'image/svg+xml;charset=utf-8'
  });
 
- let url=URL.createObjectURL(blob);
- let img=new Image();
+ const url=URL.createObjectURL(blob);
+ const img=new Image();
 
  img.onload=function(){
 
-  let canvas=document.createElement('canvas');
+  const canvas=document.createElement('canvas');
 
   canvas.width=img.width*2;
   canvas.height=img.height*2;
 
-  let ctx=canvas.getContext('2d');
+  const ctx=canvas.getContext('2d');
 
   ctx.fillStyle='white';
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
   ctx.drawImage(img,0,0,canvas.width,canvas.height);
 
-  let link=document.createElement('a');
+  const link=document.createElement('a');
 
   link.download='MUSTAKIMZX-CODE39.png';
   link.href=canvas.toDataURL('image/png');
+
   link.click();
 
   URL.revokeObjectURL(url);
@@ -511,7 +595,7 @@ function downloadBarcode(){
 
  img.onerror=function(){
   URL.revokeObjectURL(url);
-  alert('Barcode download failed');
+  alert('Barcode download failed.');
  };
 
  img.src=url;
@@ -521,19 +605,39 @@ function downloadBarcode(){
 function printBarcode(){
 
  if(!barcodeReady){
-  alert('Generate barcode first');
+  alert('Generate barcode first.');
   return;
  }
 
- let svg=document.getElementById('barcode').outerHTML;
+ const svg=document.getElementById('barcode').outerHTML;
 
  printPage(svg);
 
 }
 
+function printQR(){
+
+ if(!qrValues.length){
+  alert('Generate QR codes first.');
+  return;
+ }
+
+ const images=getQRImages();
+
+ const content=images.map((src,i)=>`
+ <div style="display:inline-block;width:45%;text-align:center;margin:10px">
+ <p>${qrValues[i]}</p>
+ <img src="${src}" width="150">
+ </div>
+ `).join('');
+
+ printPage(content);
+
+}
+
 function printPage(content){
 
- let win=window.open('','_blank');
+ const win=window.open('','_blank');
 
  if(!win){
   alert('Please allow pop-ups to print.');
