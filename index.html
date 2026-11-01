@@ -33,13 +33,13 @@ header p{margin:8px 0;font-size:13px}
  display:inline-flex;
  align-items:center;
  justify-content:center;
- width:55px;
- height:55px;
+ width:58px;
+ height:58px;
  margin-top:10px;
  border:2px solid white;
  border-radius:50%;
  color:white;
- font-size:32px;
+ font-size:34px;
  text-decoration:none;
 }
 
@@ -125,4 +125,456 @@ button{cursor:pointer}
 }
 
 .qrbox p{
- font-weight:bold
+ font-weight:bold;
+ font-size:14px;
+ word-break:break-all;
+}
+
+.actions{
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap;
+}
+
+.actions button{
+ flex:1;
+ min-width:110px;
+}
+
+.note{
+ font-size:12px;
+ color:#666;
+ margin-top:12px;
+}
+
+.hidden{display:none!important}
+
+footer{
+ text-align:center;
+ color:#777;
+ font-size:12px;
+ padding:22px;
+}
+
+#barcode{
+ max-width:100%;
+ height:auto;
+}
+
+@media(max-width:400px){
+ .card{padding:15px}
+ .tabs button{font-size:12px}
+}
+
+@media print{
+ body{background:white}
+ header,.tabs,.no-print,footer{display:none!important}
+ .container{margin:0;padding:0}
+ .card{box-shadow:none}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <h2>MUSTAKIMZX VRL</h2>
+ <p>Professional QR & Barcode Generator</p>
+ <a class="mail" href="mailto:mustakimsardar00142@gmail.com">✉</a>
+</header>
+
+<div class="container">
+
+ <div class="tabs no-print">
+  <button id="qrTab" class="active" onclick="showMode('qr')">
+   QR CODE
+  </button>
+
+  <button id="barTab" onclick="showMode('bar')">
+   CODE 39 BARCODE
+  </button>
+ </div>
+
+ <div id="qrSection" class="card">
+
+  <h3>QR CODE GENERATOR</h3>
+
+  <label>Starting Number</label>
+  <input id="qrStart" type="text"
+  inputmode="numeric"
+  placeholder="Example: 1090452546">
+
+  <label>Quantity</label>
+  <input id="qrQty" type="number"
+  min="1" max="100" value="1">
+
+  <button class="mainbtn no-print" onclick="makeQR()">
+   GENERATE QR CODE
+  </button>
+
+  <div id="qrResult" class="result"></div>
+
+  <div class="actions no-print">
+   <button class="mainbtn secondary" onclick="downloadPDF()">
+    DOWNLOAD A4 PDF
+   </button>
+
+   <button class="mainbtn secondary" onclick="printQR()">
+    PRINT
+   </button>
+  </div>
+
+  <p class="note">
+   Each QR Code contains its own consecutive number.
+  </p>
+
+ </div>
+
+ <div id="barSection" class="card hidden">
+
+  <h3>CODE 39 BARCODE GENERATOR</h3>
+
+  <label>Enter Number / Value</label>
+  <input id="barInput" type="text"
+  placeholder="Example: 1090452546">
+
+  <button class="mainbtn no-print" onclick="makeBarcode()">
+   GENERATE BARCODE
+  </button>
+
+  <div id="barResult" class="result">
+   <svg id="barcode"></svg>
+  </div>
+
+  <div class="actions no-print">
+   <button class="mainbtn secondary" onclick="downloadBarcode()">
+    DOWNLOAD PNG
+   </button>
+
+   <button class="mainbtn secondary" onclick="printBarcode()">
+    PRINT
+   </button>
+  </div>
+
+  <p class="note">
+   Only ONE Code 39 barcode will be generated at a time.
+  </p>
+
+ </div>
+
+</div>
+
+<footer>
+ © 2026 MUSTAKIMZX VRL
+</footer>
+
+<script>
+
+let qrValues=[];
+let barcodeReady=false;
+
+function showMode(mode){
+
+ document.getElementById('qrSection')
+ .classList.toggle('hidden',mode!=='qr');
+
+ document.getElementById('barSection')
+ .classList.toggle('hidden',mode!=='bar');
+
+ document.getElementById('qrTab')
+ .classList.toggle('active',mode==='qr');
+
+ document.getElementById('barTab')
+ .classList.toggle('active',mode==='bar');
+
+}
+
+function makeQR(){
+
+ if(typeof QRCode==='undefined'){
+  alert('QR library load nahi hui. Internet check karein.');
+  return;
+ }
+
+ let start=document.getElementById('qrStart').value.trim();
+ let qty=parseInt(document.getElementById('qrQty').value);
+
+ let box=document.getElementById('qrResult');
+
+ box.innerHTML='';
+ qrValues=[];
+
+ if(!/^\d+$/.test(start)){
+  alert('Please enter a valid starting number');
+  return;
+ }
+
+ if(!qty || qty<1 || qty>100){
+  alert('Quantity must be between 1 and 100');
+  return;
+ }
+
+ let first=BigInt(start);
+
+ for(let i=0;i<qty;i++){
+
+  let value=(first+BigInt(i)).toString();
+
+  qrValues.push(value);
+
+  let item=document.createElement('div');
+  item.className='qrbox';
+
+  let qr=document.createElement('div');
+
+  let title=document.createElement('p');
+  title.textContent=value;
+
+  item.appendChild(qr);
+  item.appendChild(title);
+
+  box.appendChild(item);
+
+  new QRCode(qr,{
+   text:value,
+   width:160,
+   height:160,
+   correctLevel:QRCode.CorrectLevel.H
+  });
+
+ }
+
+}
+
+function getQRImages(){
+
+ let images=[];
+
+ document.querySelectorAll('#qrResult .qrbox').forEach(box=>{
+
+  let canvas=box.querySelector('canvas');
+
+  if(canvas){
+   images.push(canvas.toDataURL('image/png'));
+  }
+
+ });
+
+ return images;
+
+}
+
+function downloadPDF(){
+
+ if(!qrValues.length){
+  alert('Generate QR codes first');
+  return;
+ }
+
+ if(!window.jspdf){
+  alert('PDF library load nahi hui. Internet check karein.');
+  return;
+ }
+
+ let images=getQRImages();
+
+ if(images.length!==qrValues.length){
+  alert('QR images ready nahi hain. Dobara Generate karein.');
+  return;
+ }
+
+ const {jsPDF}=window.jspdf;
+
+ let pdf=new jsPDF('p','mm','a4');
+
+ images.forEach((src,i)=>{
+
+  if(i>0 && i%8===0){
+   pdf.addPage();
+  }
+
+  let position=i%8;
+  let col=position%2;
+  let row=Math.floor(position/2);
+
+  let x=25+(col*95);
+  let y=10+(row*70);
+
+  pdf.setFontSize(11);
+  pdf.text(qrValues[i],x,y);
+
+  pdf.addImage(src,'PNG',x,y+3,45,45);
+
+ });
+
+ pdf.save('MUSTAKIMZX-QR-CODES.pdf');
+
+}
+
+function printQR(){
+
+ if(!qrValues.length){
+  alert('Generate QR codes first');
+  return;
+ }
+
+ let images=getQRImages();
+
+ let content=images.map((src,i)=>`
+  <div style="display:inline-block;width:45%;text-align:center;margin:10px">
+   <p>${qrValues[i]}</p>
+   <img src="${src}" width="150">
+  </div>
+ `).join('');
+
+ printPage(content);
+}
+
+function makeBarcode(){
+
+ if(typeof JsBarcode==='undefined'){
+  alert('Barcode library load nahi hui. Internet check karein.');
+  return;
+ }
+
+ let value=document.getElementById('barInput').value.trim();
+
+ if(!value){
+  alert('Please enter a value');
+  return;
+ }
+
+ document.getElementById('barcode').innerHTML='';
+ barcodeReady=false;
+
+ try{
+
+  JsBarcode('#barcode',value,{
+   format:'CODE39',
+   width:2,
+   height:100,
+   displayValue:true,
+   margin:10
+  });
+
+  barcodeReady=true;
+
+ }catch(error){
+
+  alert('Invalid Code 39 value. Use A-Z, 0-9, space, - . $ / + %');
+
+ }
+
+}
+
+function downloadBarcode(){
+
+ if(!barcodeReady){
+  alert('Generate barcode first');
+  return;
+ }
+
+ let svg=document.getElementById('barcode');
+
+ let xml=new XMLSerializer().serializeToString(svg);
+
+ let blob=new Blob([xml],{
+  type:'image/svg+xml;charset=utf-8'
+ });
+
+ let url=URL.createObjectURL(blob);
+ let img=new Image();
+
+ img.onload=function(){
+
+  let canvas=document.createElement('canvas');
+
+  canvas.width=img.width*2;
+  canvas.height=img.height*2;
+
+  let ctx=canvas.getContext('2d');
+
+  ctx.fillStyle='white';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.drawImage(img,0,0,canvas.width,canvas.height);
+
+  let link=document.createElement('a');
+
+  link.download='MUSTAKIMZX-CODE39.png';
+  link.href=canvas.toDataURL('image/png');
+  link.click();
+
+  URL.revokeObjectURL(url);
+
+ };
+
+ img.onerror=function(){
+  URL.revokeObjectURL(url);
+  alert('Barcode download failed');
+ };
+
+ img.src=url;
+
+}
+
+function printBarcode(){
+
+ if(!barcodeReady){
+  alert('Generate barcode first');
+  return;
+ }
+
+ let svg=document.getElementById('barcode').outerHTML;
+
+ printPage(svg);
+
+}
+
+function printPage(content){
+
+ let win=window.open('','_blank');
+
+ if(!win){
+  alert('Please allow pop-ups to print.');
+  return;
+ }
+
+ win.document.open();
+
+ win.document.write(`
+ <!DOCTYPE html>
+ <html>
+ <head>
+ <title>MUSTAKIMZX VRL Print</title>
+ <style>
+ body{
+  font-family:Arial;
+  text-align:center;
+  padding:20px;
+ }
+ img{max-width:100%}
+ @media print{
+  body{padding:0}
+ }
+ </style>
+ </head>
+ <body>
+ ${content}
+ </body>
+ </html>
+ `);
+
+ win.document.close();
+
+ win.onload=function(){
+  win.focus();
+  win.print();
+ };
+
+}
+
+</script>
+
+</body>
+</html>
