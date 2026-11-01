@@ -23,30 +23,23 @@ header{
  background:#a60018;
  color:white;
  text-align:center;
- padding:20px 15px;
+ padding:22px 15px;
 }
 
-header h2{
- margin:0;
- font-size:24px;
-}
-
-header p{
- margin:7px 0;
- font-size:13px;
-}
+header h2{margin:0;font-size:25px}
+header p{margin:8px 0;font-size:13px}
 
 .mail{
  display:inline-flex;
  align-items:center;
  justify-content:center;
- width:48px;
- height:48px;
+ width:55px;
+ height:55px;
  margin-top:10px;
  border:2px solid white;
  border-radius:50%;
  color:white;
- font-size:30px;
+ font-size:32px;
  text-decoration:none;
 }
 
@@ -69,7 +62,8 @@ header p{
  border-radius:8px;
  background:#ddd;
  font-weight:bold;
- font-size:15px;
+ font-size:14px;
+ cursor:pointer;
 }
 
 .tabs button.active{
@@ -84,10 +78,7 @@ header p{
  box-shadow:0 3px 12px #0001;
 }
 
-h3{
- margin-top:0;
- color:#a60018;
-}
+h3{margin-top:0;color:#a60018}
 
 label{
  display:block;
@@ -103,6 +94,8 @@ input{
  font-size:16px;
 }
 
+button{cursor:pointer}
+
 .mainbtn{
  width:100%;
  padding:14px;
@@ -111,18 +104,15 @@ input{
  border-radius:7px;
  background:#a60018;
  color:white;
- font-size:16px;
+ font-size:15px;
  font-weight:bold;
 }
 
-.secondary{
- background:#252525;
-}
+.secondary{background:#252525}
 
 .result{
  margin-top:20px;
  text-align:center;
- overflow:auto;
 }
 
 .qrbox{
@@ -131,265 +121,8 @@ input{
  background:white;
  border:1px solid #ddd;
  margin:8px;
- min-width:185px;
+ width:190px;
 }
 
 .qrbox p{
- font-weight:bold;
- font-size:14px;
-}
-
-#barcode{
- max-width:100%;
- height:auto;
-}
-
-.actions{
- display:flex;
- gap:8px;
- flex-wrap:wrap;
-}
-
-.actions button{
- flex:1;
- min-width:110px;
-}
-
-.note{
- font-size:12px;
- color:#666;
- margin-top:12px;
-}
-
-footer{
- text-align:center;
- color:#777;
- font-size:12px;
- padding:22px;
-}
-
-.hidden{
- display:none;
-}
-
-@media print{
- body{background:white}
- header,.tabs,.no-print,footer{display:none!important}
- .container{margin:0;padding:0}
- .card{box-shadow:none}
-}
-</style>
-</head>
-
-<body>
-
-<header>
- <h2>MUSTAKIMZX VRL</h2>
- <p>Professional QR & Barcode Generator</p>
- <a class="mail" href="mailto:mustakimarsardar00142@gmail.com">✉</a>
-</header>
-
-<div class="container">
-
- <div class="tabs no-print">
-  <button id="qrTab" class="active" onclick="showMode('qr')">
-   QR CODE
-  </button>
-
-  <button id="barTab" onclick="showMode('bar')">
-   CODE 39 BARCODE
-  </button>
- </div>
-
- <div id="qrSection" class="card">
-
-  <h3>QR CODE GENERATOR</h3>
-
-  <label>Starting Number</label>
-  <input id="qrStart" type="text" placeholder="Example: 1090452546">
-
-  <label>Quantity</label>
-  <input id="qrQty" type="number" min="1" max="100" value="1">
-
-  <button class="mainbtn no-print" onclick="makeQR()">
-   GENERATE QR CODE
-  </button>
-
-  <div id="qrResult" class="result"></div>
-
-  <div class="actions no-print">
-   <button class="mainbtn secondary" onclick="downloadPDF()">
-    DOWNLOAD A4 PDF
-   </button>
-
-   <button class="mainbtn secondary" onclick="printQR()">
-    PRINT
-   </button>
-  </div>
-
-  <p class="note">
-   QR format: Number*1, Number*2, Number*3...
-  </p>
-
- </div>
-
- <div id="barSection" class="card hidden">
-
-  <h3>CODE 39 BARCODE GENERATOR</h3>
-
-  <label>Enter Number / Value</label>
-  <input id="barInput" type="text" placeholder="Example: 1090452546">
-
-  <button class="mainbtn no-print" onclick="makeBarcode()">
-   GENERATE BARCODE
-  </button>
-
-  <div id="barResult" class="result">
-   <svg id="barcode"></svg>
-  </div>
-
-  <div class="actions no-print">
-   <button class="mainbtn secondary" onclick="downloadBarcode()">
-    DOWNLOAD PNG
-   </button>
-
-   <button class="mainbtn secondary" onclick="printBarcode()">
-    PRINT
-   </button>
-  </div>
-
-  <p class="note">
-   Only ONE Code 39 barcode will be generated at a time.
-  </p>
-
- </div>
-
-</div>
-
-<footer>
- © 2026 MUSTAKIMZX VRL
-</footer>
-
-<script>
-
-let qrValues=[];
-
-function showMode(mode){
-
- document.getElementById('qrSection')
- .classList.toggle('hidden',mode!=='qr');
-
- document.getElementById('barSection')
- .classList.toggle('hidden',mode!=='bar');
-
- document.getElementById('qrTab')
- .classList.toggle('active',mode==='qr');
-
- document.getElementById('barTab')
- .classList.toggle('active',mode==='bar');
-
-}
-
-function makeQR(){
-
- let start=document.getElementById('qrStart').value.trim();
-
- let qty=parseInt(document.getElementById('qrQty').value);
-
- let box=document.getElementById('qrResult');
-
- box.innerHTML='';
- qrValues=[];
-
- if(!start){
-  alert('Please enter starting number');
-  return;
- }
-
- if(!/^\d+$/.test(start)){
-  alert('Only numbers allowed');
-  return;
- }
-
- if(!qty || qty<1 || qty>100){
-  alert('Quantity must be between 1 and 100');
-  return;
- }
-
- for(let i=1;i<=qty;i++){
-
-  let value=start+'*'+i;
-
-  qrValues.push(value);
-
-  let item=document.createElement('div');
-  item.className='qrbox';
-
-  let qr=document.createElement('div');
-
-  let title=document.createElement('p');
-  title.textContent=value;
-
-  item.appendChild(qr);
-  item.appendChild(title);
-
-  box.appendChild(item);
-
-  new QRCode(qr,{
-   text:value,
-   width:160,
-   height:160,
-   correctLevel:QRCode.CorrectLevel.H
-  });
-
- }
-
-}
-
-function getQRImages(){
-
- let images=[];
-
- document.querySelectorAll('#qrResult .qrbox').forEach(box=>{
-
-  let canvas=box.querySelector('canvas');
-
-  if(canvas){
-   images.push(canvas.toDataURL('image/png'));
-  }
-
- });
-
- return images;
-
-}
-
-function downloadPDF(){
-
- if(!qrValues.length){
-  alert('Generate QR codes first');
-  return;
- }
-
- const {jsPDF}=window.jspdf;
-
- let pdf=new jsPDF('p','mm','a4');
-
- let images=getQRImages();
-
- images.forEach((src,i)=>{
-
-  if(i>0 && i%6===0){
-   pdf.addPage();
-  }
-
-  let position=i%6;
-
-  let col=position%2;
-  let row=Math.floor(position/2);
-
-  let x=25+(col*95);
-  let y=15+(row*90);
-
-  pdf.setFontSize(11);
-  pdf.text(qrValues[i],x,y);
+ font-weight:bold
