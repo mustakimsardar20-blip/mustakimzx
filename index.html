@@ -275,7 +275,7 @@ footer{
 
   <p class="note">
   Example: Starting number 1090452546 aur quantity 3 dene par QR content hoga:
-  1090452546*1, 1090452546*2, 1090452546*3.
+  1090452546-1, 1090452546-2, 1090452546-3.
   </p>
 
   <div id="qrStatus" class="status"></div>
@@ -401,7 +401,7 @@ function makeQR(){
 
  for(let i=1;i<=qty;i++){
 
-  const value=first.toString()+'*'+i;
+  const value=first.toString()+'-'+i;
 
   qrValues.push(value);
 
