@@ -1,2 +1,2 @@
-# mustakimzx-vrl
-MUSTAKIMZX VRL Sticker Printing Website
+# mustakimzx
+MUSTAKIMZX Sticker Printing Website
