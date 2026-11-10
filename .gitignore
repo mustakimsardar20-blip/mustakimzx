@@ -1,0 +1,15 @@
+*.iml
+.gradle/
+local.properties
+.idea/
+.DS_Store
+build/
+captures/
+.externalNativeBuild
+.cxx
+*.apk
+*.aab
+
+# NOTE: keystore.jks aur keystore.properties jaan-boojh kar repo me rakhe hain.
+# Isse GitHub Actions bhi wahi signature use karta hai, is liye naya APK
+# purane ke upar seedha install ho jaata hai (uninstall ki zaroorat nahi).

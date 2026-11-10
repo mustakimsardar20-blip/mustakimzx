@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MUSTAKIMZX Receiver</string>
+    <string name="autotype_label">MUSTAKIMZX Auto Type</string>
+    <string name="ime_name">MUSTAKIMZX Keyboard</string>
+    <string name="ime_subtype_label">MUSTAKIMZX English</string>
+
+    <string name="title_receiver">MUSTAKIMZX Receiver</string>
+    <string name="subtitle_receiver">Receives scans from the scanner phone and types them for you</string>
+
+    <string name="status_server_off">Server stopped</string>
+    <string name="status_listening">Waiting for the scanner phone…</string>
+    <string name="status_client_connected">Connected: %1$s</string>
+    <string name="status_server_error">Error: %1$s</string>
+    <string name="status_no_keyboard">Keyboard not enabled</string>
+    <string name="status_keyboard_ok">Keyboard enabled</string>
+    <string name="status_accessibility_ok">Auto type enabled</string>
+    <string name="status_accessibility_off">Auto type disabled</string>
+
+    <string name="btn_start_server">Start receiver</string>
+    <string name="btn_stop_server">Stop receiver</string>
+    <string name="btn_enable_keyboard">Enable keyboard</string>
+    <string name="btn_choose_keyboard">Choose keyboard</string>
+    <string name="btn_enable_autotype">Enable auto type</string>
+    <string name="btn_bluetooth_settings">Pair scanner phone</string>
+    <string name="btn_open_chrome">Open Chrome</string>
+
+    <string name="section_server">CONNECTION</string>
+    <string name="section_keyboard">KEYBOARD &amp; AUTO TYPE</string>
+    <string name="section_log">RECEIVED SCANS</string>
+    <string name="empty_log">Nothing received yet</string>
+    <string name="last_scan_label">Last received</string>
+
+    <string name="autotype_description">MUSTAKIMZX Auto Type types the code received over Bluetooth into the focused field and presses Enter. It only reads which field is focused — it never uploads anything.</string>
+    <string name="ime_description">MUSTAKIMZX Keyboard types received scans into any app, including Chrome.</string>
+
+    <string name="notif_channel_name">Receiver connection</string>
+    <string name="notif_title">MUSTAKIMZX Receiver active</string>
+    <string name="notif_text_listening">Waiting for the scanner phone</string>
+    <string name="notif_text_connected">Connected to %1$s</string>
+
+    <string name="toast_server_running">Receiver is running</string>
+    <string name="toast_bt_permission">Bluetooth permission is required</string>
+    <string name="toast_enable_bt">Please turn on Bluetooth</string>
+    <string name="toast_keyboard_hint">Select "MUSTAKIMZX Keyboard" as the current keyboard</string>
+    <string name="toast_autotype_hint">Enable MUSTAKIMZX Auto Type in Accessibility settings</string>
+    <string name="toast_copied">Copied</string>
+    <string name="toast_no_scan">Nothing to send yet</string>
+    <string name="sent_label">Inserted</string>
+    <string name="keyboard_active">MUSTAKIMZX keyboard is active ✓</string>
+    <string name="keyboard_enabled">Keyboard enabled — tap “Choose keyboard” to switch</string>
+    <string name="hint_auto_enter">Press Enter automatically</string>
+    <string name="hint_ime_insert">Insert scan directly from keyboard</string>
+    <string name="hint_chrome_note">For VRL in Chrome use the MUSTAKIMZX keyboard; auto type works on native fields.</string>
+
+    <string name="ime_hint_idle">MUSTAKIMZX — waiting for scan</string>
+    <string name="ime_hint_last">Last: %1$s</string>
+    <string name="key_space">Space</string>
+    <string name="key_enter">Enter</string>
+    <string name="key_shift">Shift</string>
+    <string name="key_backspace">⌫</string>
+    <string name="key_symbols">\?123</string>
+    <string name="key_letters">ABC</string>
+    <string name="key_send_last">SEND LAST</string>
+    <string name="key_enter_label">ENTER</string>
+    <string name="ime_scan_received">Scan received</string>
+    <string name="autoenter_on">Auto Enter: ON</string>
+    <string name="autoenter_off">Auto Enter: OFF</string>
+</resources>

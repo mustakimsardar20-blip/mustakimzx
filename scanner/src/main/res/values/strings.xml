@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MUSTAKIMZX Scanner</string>
+
+
+    <string name="title_scanner">MUSTAKIMZX Scanner</string>
+    <string name="subtitle_scanner">Scan QR / Barcode and send it to the receiver phone</string>
+
+    <string name="status_bluetooth_off">Bluetooth is off</string>
+    <string name="status_not_paired">Not connected — choose the receiver phone</string>
+    <string name="status_connected">Connected to %1$s</string>
+    <string name="status_connecting">Connecting to %1$s…</string>
+    <string name="status_error">Connection error: %1$s</string>
+
+    <string name="btn_devices">Choose receiver phone</string>
+    <string name="btn_scan">Start scanning</string>
+    <string name="btn_stop">Stop</string>
+    <string name="btn_send_last">Resend last scan</string>
+    <string name="btn_clear">Clear</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="empty_log">No scans yet</string>
+
+    <string name="camera_permission_required">Camera permission is required to scan codes</string>
+    <string name="enable_bluetooth">Please turn on Bluetooth</string>
+    <string name="no_paired_devices">No paired devices. Pair the receiver phone in Bluetooth settings first.</string>
+    <string name="pick_device">Select receiver phone</string>
+    <string name="not_connected_toast">Not connected to the receiver phone</string>
+    <string name="sent_toast">Sent</string>
+    <string name="send_failed_toast">Send failed — reconnecting</string>
+    <string name="flash_on">Flash on</string>
+    <string name="flash_off">Flash off</string>
+    <string name="scan_prompt">Point the camera at a QR code or barcode</string>
+    <string name="cooldown_hint">Duplicate ignored</string>
+    <string name="bt_permission_required">Bluetooth permission is required</string>
+</resources>
