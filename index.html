@@ -475,6 +475,7 @@ function getQRImages(){
 }
 
 function downloadPDF(){
+function downloadPDF(){
 
  if(!qrValues.length){
   alert('Please generate QR codes first.');
@@ -499,21 +500,30 @@ function downloadPDF(){
 
  images.forEach((src,i)=>{
 
-  if(i>0 && i%8===0){
+  if(i>0){
    pdf.addPage();
   }
 
-  const position=i%8;
-  const col=position%2;
-  const row=Math.floor(position/2);
+  // QR Number
+  pdf.setFont('helvetica','bold');
+  pdf.setFontSize(18);
 
-  const x=25+(col*95);
-  const y=10+(row*70);
+  pdf.text(
+   qrValues[i],
+   105,
+   95,
+   {align:'center'}
+  );
 
-  pdf.setFontSize(11);
-  pdf.text(qrValues[i],x,y);
-
-  pdf.addImage(src,'PNG',x,y+3,45,45);
+  // QR Code Center
+  pdf.addImage(
+   src,
+   'PNG',
+   55,
+   110,
+   100,
+   100
+  );
 
  });
 
