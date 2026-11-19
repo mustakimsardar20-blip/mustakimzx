@@ -475,60 +475,43 @@ function getQRImages(){
 }
 
 function downloadPDF(){
-function downloadPDF(){
 
- if(!qrValues.length){
-  alert('Please generate QR codes first.');
-  return;
- }
+if(!qrValues || qrValues.length===0){
+alert('Please generate QR codes first.');
+return;
+}
 
- if(!window.jspdf){
-  alert('PDF library load nahi hui. Internet check karein.');
-  return;
- }
+if(typeof window.jspdf === 'undefined'){
+alert('PDF library load nahi hui.');
+return;
+}
 
- const images=getQRImages();
+const images=getQRImages();
 
- if(images.length!==qrValues.length){
-  alert('QR images ready nahi hain. Dobara Generate karein.');
-  return;
- }
+if(images.length===0){
+alert('QR images ready nahi hain. Dobara Generate karein.');
+return;
+}
 
- const {jsPDF}=window.jspdf;
+const {jsPDF}=window.jspdf;
+const pdf=new jsPDF('p','mm','a4');
 
- const pdf=new jsPDF('p','mm','a4');
+images.forEach((src,i)=>{
 
- images.forEach((src,i)=>{
+if(i>0){
+pdf.addPage();
+}
 
-  if(i>0){
-   pdf.addPage();
-  }
+pdf.setFontSize(18);
+pdf.setFont('helvetica','bold');
 
-  // QR Number
-  pdf.setFont('helvetica','bold');
-  pdf.setFontSize(18);
+pdf.text(qrValues[i],105,95,{align:'center'});
 
-  pdf.text(
-   qrValues[i],
-   105,
-   95,
-   {align:'center'}
-  );
+pdf.addImage(src,'PNG',55,110,100,100);
 
-  // QR Code Center
-  pdf.addImage(
-   src,
-   'PNG',
-   55,
-   110,
-   100,
-   100
-  );
+});
 
- });
-
- pdf.save('MUSTAKIMZX-QR-CODES.pdf');
-
+pdf.save('MUSTAKIMZX-QR-CODES.pdf');
 }
 
 function makeBarcode(){
